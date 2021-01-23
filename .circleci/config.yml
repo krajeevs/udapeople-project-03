@@ -50,7 +50,8 @@ jobs:
           command: |
             # Your code here
             echo `pwd`
-            cd ../frontend
+            ls -lart
+            cd ~/project/frontend
             npm i
             npm run build
             echo "Done-frontend-build"
@@ -71,7 +72,7 @@ jobs:
           command: |
              # Your code here
              pwd
-             cd ../backend
+             cd ~/project/backend
              npm i
              npm run build
              echo "Done-backend-build"
