@@ -115,20 +115,30 @@ jobs:
           keys: [frontend-build]
       # Your job code here
       - run:
-          name: Build front-end
+          name: Scan front-end
           command: |
           cd frontend
           npm i
-          npm audit
+          npm audit --audit-level=critical
           
   scan-backend:
     docker:
       # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [backend-build]
       # Your job code here
-
+      - run:
+          name: Scan backend-end
+          command: |
+          cd backend
+          npm i
+          npm audit --audit-level=critical
+          
   deploy-infrastructure:
     docker:
       # Docker image here that supports AWS CLI
