@@ -49,13 +49,13 @@ jobs:
           name: Build front-end
           command: |
             # Your code here
-            echo `pwd`
-            ls -lart
+            #echo `pwd`
+            #ls -lart
             cd ~/project/frontend
             npm i
             npm run build
             echo "Done-frontend-build"
-            exit 1
+            #exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -71,12 +71,12 @@ jobs:
           name: Back-end build
           command: |
              # Your code here
-             pwd
+             #echo `pwd`
              cd ~/project/backend
              npm i
              npm run build
              echo "Done-backend-build"
-             exit 1
+             #exit 1
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
