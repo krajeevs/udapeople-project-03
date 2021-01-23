@@ -44,7 +44,8 @@ jobs:
           name: Build front-end
           command: |
             # Your code here
-            cd ../frontend
+            pwd
+            cd frontend
             npm i
             npm run build
             echo "Done-frontend-build"
@@ -64,6 +65,7 @@ jobs:
           name: Back-end build
           command: |
              # Your code here
+             pwd
              cd ../backend
              npm i
              npm run build
@@ -76,27 +78,49 @@ jobs:
   test-frontend:
     docker:
       # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [frontend-build]
       # Your job code here
-                
+      - run: npm i
+      - run: npm run test             
+                      
   test-backend:
     docker:
       # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [backend-build]
       # Your job code here
+      - run: npm i
+      - run: npm run test
             
   scan-frontend:
     docker:
       # Docker image here
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       # Restore from cache
+      - restore_cache:
+          keys: [frontend-build]
       # Your job code here
-
+      - run:
+          name: Build front-end
+          command: |
+          cd frontend
+          npm i
+          npm audit
+          
   scan-backend:
     docker:
       # Docker image here
