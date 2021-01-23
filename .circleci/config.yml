@@ -49,7 +49,7 @@ jobs:
           name: Build front-end
           command: |
             # Your code here
-            echo pwd
+            echo `pwd`
             cd ../frontend
             npm i
             npm run build
