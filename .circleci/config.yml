@@ -185,7 +185,7 @@ jobs:
             echo "[web]" > inventory.txt
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text >> inventory.txt
             cp -p inventory.txt ~/project/.circleci/ansible/inventory.txt
-            aws s3 sync ./inventory.txt s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
+            aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
             yum -y install tar gzip
             #exit 1
       - persist_to_workspace:
