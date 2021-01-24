@@ -16,8 +16,8 @@ commands:
             # Your code here
             echo "<<parameters.workflow_id>>"
             aws s3 rm s3://udapeople-<<parameters.workflow_id>>
-            aws cloudformation delete --stack-name "udapeople-krajeevs-p03-front-end-<<parameters.workflow_id>>
-            aws cloudformation delete --stack-name "udapeople-krajeevs-p03-back-end-<<parameters.workflow_id>>
+            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-<<parameters.workflow_id>>
+            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-<<parameters.workflow_id>>
 
             #exit 1
 
@@ -186,6 +186,7 @@ jobs:
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicIpAddress] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > inventory.txt
             cat inventory.txt
             cp -p inventory.txt ~/project/.circleci/ansible/inventory.txt
+            yum -y install tar gzip
             #exit 1
       - persist_to_workspace:
           root: ~/
