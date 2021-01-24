@@ -238,6 +238,7 @@ jobs:
       - checkout
       - run:
           name: Run migrations
+          no_output_timeout: 20m
           command: |
             # Your code here
             cd ~/project/backend
@@ -254,7 +255,9 @@ jobs:
             TYPEORM_USERNAME=postgres
             TYPEORM_PASSWORD=p0ssw0rdPG
             TYPEORM_DATABASE=prodpg01
-
+            echo $TYPEORM_HOST
+            hostname
+            
             npm i
             #npm run migrations:revert
             npm run migrations
