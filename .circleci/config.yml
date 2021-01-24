@@ -243,8 +243,9 @@ jobs:
             cd ~/project/backend
             source ~/project/backend/.env
             npm i
-            npm run migrations:revert
-            mystatus=$( npm run migrations | grep -i "has been executed successfully")
+            #npm run migrations:revert
+            npm run migrations
+            #mystatus=$( npm run migrations | grep -i "has been executed successfully")
 
 
       - run:
@@ -269,20 +270,27 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
             # your code here
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > url.txt
       - run:
           name: Get backend url
           command: |
             # your code here
+            BACKEND_IP-`cat url.txt`
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
           command: |
             # your code here
+            cd ~/project/frontend
+
+            npm run i
+            npm run build
       # Here's where you will add some code to rollback on failure      
                     
   deploy-backend:
@@ -291,6 +299,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
