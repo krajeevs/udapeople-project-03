@@ -232,11 +232,7 @@ jobs:
     docker:
       # Docker image here that supports NodeJS
       - image: circleci/node:13.8.0
-     parameters:
-      # Add parameter here   
-      idb_mig_status:
-          type: integer 
-          default: 0
+
     steps:
       # Checkout code from git
       - checkout
@@ -246,7 +242,7 @@ jobs:
             # Your code here
             cd ~/project/backend
             npm i
-            mystatus=$( npm run migrations | grep -i "success")
+            mystatus=$( npm run migrations | grep -i "has been executed successfully")
 
 
       - run:
