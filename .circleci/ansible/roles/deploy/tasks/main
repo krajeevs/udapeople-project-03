@@ -1,0 +1,6 @@
+- name: "move ./dist to ~/dist."
+  become: true
+  copy:
+    src: dist
+    dest: ~/dist
+    remote_src: yes
