@@ -232,17 +232,37 @@ jobs:
     docker:
       # Docker image here that supports NodeJS
       - image: circleci/node:13.8.0
+     parameters:
+      # Add parameter here   
+      idb_mig_status:
+          type: integer 
+          default: 0
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Run migrations
           command: |
             # Your code here
-            exit 1
+            cd ~/project/backend
+            npm i
+            mystatus=$( npm run migrations | grep -i "success")
+
+
       - run:
           name: Send migration results to memstash
           command: |
             # Your code here
+            if [ -z $mystatus ]
+            then
+	          echo 'Not Found'
+            curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "0" https://api.memstash.io/values/idb_mig_status_${CIRCLE_WORKFLOW_ID:0:7}
+            else
+	          echo 'Found'
+            curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "1" https://api.memstash.io/values/idb_mig_status_${CIRCLE_WORKFLOW_ID:0:7}
+            fi
+            
+            curl -H "token: krajeevs" --request GET https://api.memstash.io/values/idb_mig_status_${CIRCLE_WORKFLOW_ID:0:7}
             exit 1
      # Here's where you will add some code to rollback on failure      
 
