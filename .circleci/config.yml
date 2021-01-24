@@ -161,10 +161,9 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
               --stack-name "udapeople-krajeevs-p03-back-end-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-      #- run: aws s3 sync . s3://"${CIRCLE_WORKFLOW_ID}" --delete
-      - run: aws s3 sync . s3://udapeople-krajeevs-p03/ --delete
-      
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}
+
+   
       - run:
           name: Ensure front-end infrastructure exist
           command: |
