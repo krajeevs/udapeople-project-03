@@ -166,7 +166,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
                --stack-name "udapeople-krajeevs-p03-back-end-${CIRCLE_WORKFLOW_ID:0:7}" \
-               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}
+               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
    
       - run:
@@ -201,12 +201,20 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
+      - checkout:
       # Add ssh keys with fingerprint
+      - add_ssh_key:
+          fingerprints: ["9b:ef:6f:6e:9c:70:08:e3:52:7a:2d:18:4c:4e:68:4e"]
+          
       # attach workspace
+      - attach_workspace:
+          at: ~/          
+          
       - run:
           name: Install dependencies
           command: |
             # Your code here
+            apk add --update ansible
             exit 1
       - run:
           name: Configure server
