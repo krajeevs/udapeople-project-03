@@ -251,14 +251,14 @@ jobs:
             # Your code here
             if [ -z $mystatus ]
             then
-	          echo 'Not Found'
-            curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "0" https://api.memstash.io/values/idb_mig_status_${CIRCLE_WORKFLOW_ID:0:7}
+	    echo 'Error'
+	    curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "0" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             else
-	          echo 'Found'
-            curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "1" https://api.memstash.io/values/idb_mig_status_${CIRCLE_WORKFLOW_ID:0:7}
+	    echo 'Success'
+	    curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi
             
-            curl -H "token: krajeevs" --request GET https://api.memstash.io/values/idb_mig_status_${CIRCLE_WORKFLOW_ID:0:7}
+	    curl -H "token: krajeevs" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             exit 1
      # Here's where you will add some code to rollback on failure      
 
