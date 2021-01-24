@@ -288,9 +288,10 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
+            
+            npm install
+            npm start
             cd ~/project/frontend
-
-            npm run i
             npm run build
             cd ./dist 
             aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}/.circleci/ansible/roles/deploy/files/"
