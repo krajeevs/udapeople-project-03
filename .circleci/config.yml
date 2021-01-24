@@ -260,7 +260,7 @@ jobs:
             
             npm i
             #npm run migrations:revert
-            npm run migrations
+            #npm run migrations
             #mystatus=$( npm run migrations | grep -i "has been executed successfully")
 
 
@@ -277,7 +277,7 @@ jobs:
             fi
             
             curl -H "token: krajeevs" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-            exit 1
+            # exit 1
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
