@@ -282,17 +282,17 @@ jobs:
           command: |
             # your code here
             yum -y install tar gzip
-            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
       
       - persist_to_workspace:
           root: ~/
           paths:
-            - backend_url.txt
+            - ~/project/backend_url.txt
       - run:
           name: Get backend url            
           command: |
             # your code here
-            BACKEND_IP=`cat backend_url.txt`
+            BACKEND_IP=`cat ~/project/backend_url.txt`
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
@@ -343,8 +343,8 @@ jobs:
       # Here's where you will add some code to rollback on failure  
       - revert-migrations: 
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-environment: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- destroy-environment: 
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
 
   smoke-test:
