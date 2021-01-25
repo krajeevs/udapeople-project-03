@@ -84,7 +84,7 @@ jobs:
             uname
             pwd
             echo "ABC" > tmp.txt
-            API_URL=$(cat tmp.txt)
+            API_URL=`cat tmp.txt`
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
