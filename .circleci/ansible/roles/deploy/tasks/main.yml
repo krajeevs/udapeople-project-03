@@ -3,4 +3,5 @@
   copy:
     src: dist
     dest: ~/dist
-    remote_src: yes
+
+
