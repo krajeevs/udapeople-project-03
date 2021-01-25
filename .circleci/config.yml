@@ -366,11 +366,17 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            cat ~/backend_url.txt
+            URL=`cat ~/project/backend_url.txt`
       - run:
           name: Backend smoke test.
           command: |
             # your code here
+            if curl -s ${URL} | grep "Welcome"
+            then
+            return 1
+            else
+            return 0
+            fi
       - run:
           name: Frontend smoke test.
           command: |
