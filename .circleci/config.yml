@@ -56,7 +56,7 @@ jobs:
             echo "ABC" > tmp.txt
             cat tmp.txt
             API_URL=$(cat tmp.txt)
-            export API_URL="http://${BACKEND_IP}:3030"
+            export API_URL="http://"`cat tmp.txt`":3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
@@ -88,7 +88,8 @@ jobs:
             cat tmp.txt
  
             API_URL=`cat tmp.txt`
-            export API_URL="http://${BACKEND_IP}:3030"
+            #export API_URL="http://${BACKEND_IP}:3030"
+            export API_URL="http://"`cat tmp.txt`":3030"
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
