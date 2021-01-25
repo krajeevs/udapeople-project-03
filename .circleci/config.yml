@@ -190,6 +190,9 @@ jobs:
             echo "[web]" > inventory.txt
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text >> inventory.txt
             cp -p inventory.txt ~/project/.circleci/ansible/inventory.txt
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
+            mkdir ~/project/backend/dist
+            mkdir ~/project/frontend/dist
             aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
             yum -y install tar gzip
             #exit 1
@@ -273,7 +276,8 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      #- image: amazon/aws-cli
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -282,7 +286,7 @@ jobs:
           command: |
             # your code here
             yum -y install tar gzip
-            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
+            #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
       
       - persist_to_workspace:
           root: ~/
@@ -300,7 +304,7 @@ jobs:
           command: |
             # your code here
             #apt-get install -y npm
-            yum install npm
+            #yum install npm
             
             npm install
             npm start
