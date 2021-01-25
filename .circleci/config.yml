@@ -26,12 +26,16 @@ commands:
     parameters:
       # Add parameter here  
       workflow_id:
-          type: string 
+          type: string
+
     steps:
       - run:
           name: Revert migrations
           # Add when this will run
           command: |
+            echo "<<parameters.workflow_id>>"
+            SUCCESS=`curl -H "token: krajeevs_<<parameters.workflow_id>>" --request GET https://api.memstash.io/values/migration_<<parameters.workflow_id>> `
+            
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS = 1
             if(( $SUCCESS==1 )); 
@@ -256,13 +260,13 @@ jobs:
             # Your code here
             if [ -z $mystatus ]
             then
-            curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "0" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            curl -H "Content-Type: text/plain" -H "token: krajeevs_${CIRCLE_WORKFLOW_ID:0:7}" --request PUT --data "0" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             else
             echo 'Success'
-            curl -H "Content-Type: text/plain" -H "token: krajeevs" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            curl -H "Content-Type: text/plain" -H "token: krajeevs_${CIRCLE_WORKFLOW_ID:0:7}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             fi
             
-            curl -H "token: krajeevs" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            #curl -H "token: krajeevs_${CIRCLE_WORKFLOW_ID:0:7}" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
             # exit 1
      # Here's where you will add some code to rollback on failure      
 
@@ -277,6 +281,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            yum -y install tar gzip
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
       
       - persist_to_workspace:
@@ -304,7 +309,11 @@ jobs:
             cd ~/project
             aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
       # Here's where you will add some code to rollback on failure      
-                    
+      - revert-migrations: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
@@ -331,7 +340,9 @@ jobs:
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook ~/project/.circleci/ansible/deploy-backend.yml -i ~/project/.circleci/ansible/inventory.txt
             #exit 1
-      # Here's where you will add some code to rollback on failure      
+      # Here's where you will add some code to rollback on failure  
+      - revert-migrations: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment: 
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
