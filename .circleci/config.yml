@@ -348,9 +348,10 @@ jobs:
           command: |
             # your code here
             apk add --update curl
-      - run:
+      
       - attach_workspace:
           at: ~/ 
+      - run:
           name: Get backend url
           command: |
             # your code here
