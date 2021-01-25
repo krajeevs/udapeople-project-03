@@ -15,7 +15,7 @@ commands:
           command: |
             # Your code here
             echo "<<parameters.workflow_id>>"
-            aws s3 rm s3://udapeople-<<parameters.workflow_id>>
+            ##aws s3 rm s3://udapeople-<<parameters.workflow_id>>
             aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-<<parameters.workflow_id>>"
             aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-<<parameters.workflow_id>>"
 
@@ -343,8 +343,8 @@ jobs:
       # Here's where you will add some code to rollback on failure  
       - revert-migrations: 
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- destroy-environment: 
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
 
   smoke-test:
@@ -381,8 +381,13 @@ jobs:
           name: Frontend smoke test.
           command: |
             # your code here
+            echo 'test'
       # Here's where you will add some code to rollback on failure  
-
+      - revert-migrations: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+          
   cloudfront-update:
     docker:
       # Docker image here that supports AWS CLI
