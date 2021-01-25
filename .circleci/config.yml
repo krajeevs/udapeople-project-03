@@ -34,7 +34,7 @@ commands:
             
 jobs:
 
-  deploy-frontend:
+  test:
     docker:
       # Docker image here that supports AWS CLI
       - image: circleci/node:13.8.0
