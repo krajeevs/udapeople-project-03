@@ -190,11 +190,12 @@ jobs:
             echo "[web]" > inventory.txt
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text >> inventory.txt
             cp -p inventory.txt ~/project/.circleci/ansible/inventory.txt
-            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicIpAddress] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicIpAddress] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text >> backend_url.txt
             mkdir ~/project/backend/dist
             mkdir ~/project/frontend/dist
             #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
             
+            cat ~/project/.circleci/ansible/inventory.txt
             cat backend_url.txt
             #cat ~/project/backend_url.txt
 
@@ -293,13 +294,14 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - run: yum -y install tar gzip
       - attach_workspace:
           at: ~/ 
       - run:
           name: Install dependencies
           command: |
             # your code here
-            yum -y install tar gzip
+            #yum -y install tar gzip
             #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
             cat ~/project/backend_url.txt
 
