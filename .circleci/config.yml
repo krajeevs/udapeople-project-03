@@ -182,7 +182,7 @@ jobs:
               --tags project=udapeople \
                --stack-name "udapeople-krajeevs-p03-front-end-${CIRCLE_WORKFLOW_ID:0:7}" \
                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
-      - run: aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
+      #- run: aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -190,10 +190,14 @@ jobs:
             echo "[web]" > inventory.txt
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text >> inventory.txt
             cp -p inventory.txt ~/project/.circleci/ansible/inventory.txt
-            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
             mkdir ~/project/backend/dist
             mkdir ~/project/frontend/dist
             aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
+            
+            #cat backend_url.txt
+            #cat ~/project/backend_url.txt
+
             yum -y install tar gzip
             #exit 1
       - persist_to_workspace:
