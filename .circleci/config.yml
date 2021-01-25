@@ -190,7 +190,7 @@ jobs:
             echo "[web]" > inventory.txt
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text >> inventory.txt
             cp -p inventory.txt ~/project/.circleci/ansible/inventory.txt
-            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicIpAddress] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
             mkdir ~/project/backend/dist
             mkdir ~/project/frontend/dist
             #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
@@ -261,22 +261,13 @@ jobs:
             npm run migrations:revert
             #npm run migrations
             mystatus=$( npm run migrations | grep -i "has been executed successfully")
+            echo $mystatus >> ~/project/migrations_status.txt
             
       - persist_to_workspace:
           root: ~/
           paths:
             - project/
-      - run:
-            #BACKEND_IP=$(cat ~/project/backend_url.txt)
-            #export API_URL="http://${BACKEND_IP}:3030"
-            export API_URL="http://"`cat ~/project/backend_url.txt`":3030"
-            echo "${API_URL}"
-            
-            npm install
-            npm start
-            cd ~/project/frontend
-            npm run build
-            
+       
       - run:
           name: Send migration results to memstash
           command: |
@@ -302,17 +293,16 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - attach_workspace:
+          at: ~/ 
       - run:
           name: Install dependencies
           command: |
             # your code here
             yum -y install tar gzip
-            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
-      
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/
+            #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
+            cat ~/project/backend_url.txt
+
       - run:
           name: Get backend url            
           command: |
@@ -338,10 +328,10 @@ jobs:
             #cd ~/project
             #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
       # Here's where you will add some code to rollback on failure      
-      #- revert-migrations: 
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- destroy-environment: 
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           
   deploy-backend:
     docker:
@@ -368,12 +358,12 @@ jobs:
             # your code here
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook ~/project/.circleci/ansible/deploy-backend.yml -i ~/project/.circleci/ansible/inventory.txt
-            exit 1
+            #exit 1
       # Here's where you will add some code to rollback on failure  
-      #- revert-migrations: 
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- destroy-environment: 
-          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment: 
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
 
   smoke-test:
