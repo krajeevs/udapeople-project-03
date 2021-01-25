@@ -15,7 +15,7 @@ commands:
           command: |
             # Your code here
             echo "<<parameters.workflow_id>>"
-            ##aws s3 rm s3://udapeople-<<parameters.workflow_id>>
+            aws s3 rm s3://udapeople-<<parameters.workflow_id>>
             aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-<<parameters.workflow_id>>"
             aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-<<parameters.workflow_id>>"
 
@@ -287,7 +287,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - ~/project/backend_url.txt
+            - project/
       - run:
           name: Get backend url            
           command: |
@@ -304,6 +304,7 @@ jobs:
             npm start
             cd ~/project/frontend
             npm run build
+            #cd ~/project/backend
             cd ./dist
             cp -pr ./dist ~/project/.circleci/ansible/roles/deploy/files/
             #ls -lart 
