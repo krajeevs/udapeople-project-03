@@ -245,6 +245,10 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/
       - run:
           name: Run migrations
           no_output_timeout: 20m
@@ -256,7 +260,15 @@ jobs:
             #npm run migrations
             mystatus=$( npm run migrations | grep -i "has been executed successfully")
 
-
+            BACKEND_IP=`cat ~/project/backend_url.txt`
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            
+            npm install
+            npm start
+            cd ~/project/frontend
+            npm run build
+            
       - run:
           name: Send migration results to memstash
           command: |
@@ -276,8 +288,8 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      #- image: amazon/aws-cli
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
+      #- image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -286,7 +298,7 @@ jobs:
           command: |
             # your code here
             yum -y install tar gzip
-            #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
+            aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
       
       - persist_to_workspace:
           root: ~/
@@ -317,10 +329,10 @@ jobs:
             #cd ~/project
             #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
       # Here's where you will add some code to rollback on failure      
-      - revert-migrations: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-environment: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- revert-migrations: 
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- destroy-environment: 
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           
   deploy-backend:
     docker:
@@ -347,12 +359,12 @@ jobs:
             # your code here
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook ~/project/.circleci/ansible/deploy-backend.yml -i ~/project/.circleci/ansible/inventory.txt
-            #exit 1
+            exit 1
       # Here's where you will add some code to rollback on failure  
-      - revert-migrations: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-environment: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- revert-migrations: 
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- destroy-environment: 
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
 
   smoke-test:
