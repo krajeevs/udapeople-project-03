@@ -1,7 +1,8 @@
 - name: "copy dist "
   become: true
   copy:
-    src: /root/project/backend/dist
+    #src: /root/project/backend/dist
+    src: /root/project/
     dest: /home/ubuntu
 
 - name: Executing node
