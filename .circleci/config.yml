@@ -299,6 +299,7 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
+            apt-get install -y npm
             
             npm install
             npm start
