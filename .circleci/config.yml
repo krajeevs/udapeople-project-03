@@ -45,10 +45,14 @@ jobs:
           command: |
             # your code here
             echo "Hello"
+           
       - run:
           name: Get backend url
           command: |
             # your code here
+            echo $SHELL
+            uname
+            pwd
             echo "ABC" > tmp.txt
             API_URL=$(cat tmp.txt)
             export API_URL="http://${BACKEND_IP}:3030"
@@ -59,10 +63,40 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure      
                     
-        
+
+  test2:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
+    steps:
+      # Checkout code from git
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            echo "Hello"
+           
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+            echo $SHELL
+            uname
+            pwd
+            echo "ABC" > tmp.txt
+            API_URL=$(cat tmp.txt)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            # your code here
+      # Here's where you will add some code to rollback on failure      
+                       
 
 workflows:
   default:
     jobs:
       - test
+      - test2
       
