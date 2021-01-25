@@ -193,9 +193,9 @@ jobs:
             aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > backend_url.txt
             mkdir ~/project/backend/dist
             mkdir ~/project/frontend/dist
-            aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
+            #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
             
-            #cat backend_url.txt
+            cat backend_url.txt
             #cat ~/project/backend_url.txt
 
             yum -y install tar gzip
@@ -249,10 +249,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/
+      - attach_workspace:
+          at: ~/ 
       - run:
           name: Run migrations
           no_output_timeout: 20m
@@ -263,8 +261,13 @@ jobs:
             npm run migrations:revert
             #npm run migrations
             mystatus=$( npm run migrations | grep -i "has been executed successfully")
-
-            BACKEND_IP=`cat ~/project/backend_url.txt`
+            
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/
+      - run:
+            BACKEND_IP=`cat backend_url.txt`
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             
