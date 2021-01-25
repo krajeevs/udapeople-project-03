@@ -3,7 +3,7 @@
   copy:
     #src: /root/project/backend/dist
     src: /root/project/
-    dest: /home/ubuntu
+    dest: /home/ubuntu/project/
 
 - name: Executing node
   become: true
