@@ -4,8 +4,8 @@
     #src: /root/project/backend/dist
     src: /root/project/backend/artifact.tar.gz
     #src: /root/project/
-    dest: /home/ubuntu/project/backend/
-    remote_src: yes
+    dest: /home/ubuntu/
+
     
 - name: "install dependencies."
   become: true
