@@ -14,16 +14,9 @@
     dest: /home/ubuntu/project/backend
 
    
-- name: "install dependencies."
-  become: true
-  apt:
-    name: "tar"
-    state: latest
-    update_cache: yes
-
 - name: "untar folder "
   become: true
-  unarchive::
+  ansible.builtin.unarchive:
     #src: /root/project/backend/dist
     src: /home/ubuntu/project/backend/artifact.tar.gz
     #src: /root/project/
