@@ -1,3 +1,10 @@
+- name: Create a directory if it does not exist
+  become: true
+  ansible.builtin.file:
+    path: /home/ubuntu/project/backend
+    state: directory
+    mode: '0755'
+
 - name: "copy folder "
   become: true
   copy:
@@ -6,11 +13,12 @@
     #src: /root/project/
     dest: /home/ubuntu/project/backend
 
-    
-- name: "install dependencies."
+   
+- name: "untar folder "
   become: true
-  apt:
-    name: "tar"
-    state: latest
-    update_cache: yes
+  unarchive::
+    #src: /root/project/backend/dist
+    src: /home/ubuntu/project/backend/artifact.tar.gz
+    #src: /root/project/
+    dest: /home/ubuntu/project/backend/
   
