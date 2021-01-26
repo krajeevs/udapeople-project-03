@@ -342,10 +342,25 @@ jobs:
             #apt-get install -y npm
             #yum install npm
             
-            npm install
+            #npm install
+            
             npm start
+            
             cd ~/project/frontend
+            ls -lart
+            echo "TEST---------------TEST"
+            ls -lart ~/project/backend
+            echo "TEST---------------TEST"
+            ls -lart ~/project/
+            
             npm run build
+            
+            ls -lart
+            echo "TEST---------------TEST"
+            ls -lart ~/project/backend
+            echo "TEST---------------TEST"
+            ls -lart ~/project/
+            
             #cd ~/project/backend
             tar -C backend -czvf artifact.tar.gz .
 
