@@ -366,6 +366,7 @@ jobs:
             tar -C dist -czvf dist.tar.gz .
             ls -lart
             pwd
+            aws s3 cp dist.tar.gz s3://udapeople-krajeevs-p03/frontend
             aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}  
             #aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
 
@@ -421,7 +422,9 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             
             tar -C backend -czvf artifact.tar.gz .
-            
+            ls -alrt 
+            pwd
+            aws s3 cp artifact.tar.gz s3://udapeople-krajeevs-p03/ 
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook ~/project/.circleci/ansible/deploy-backend.yml -i ~/project/.circleci/ansible/inventory.txt
             #exit 1
@@ -572,8 +575,8 @@ workflows:
       - deploy-frontend:
           requires: [run-migrations]
       - deploy-backend:
-          requires: [run-migrations]
-          #requires: [deploy-frontend]
+          #requires: [run-migrations]
+          requires: [deploy-frontend]
           
       #- deploy-frontend:
           #requires: [run-migrations]
