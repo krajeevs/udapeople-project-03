@@ -369,8 +369,7 @@ jobs:
             ls -lart
             pwd
 
-            #scp -o \"StrictHostKeyChecking no\" -rp dist.tar.gz bicbacboe@ssh.bicbacboe.com:~/<<parameters.subdomain>>/<<parameters.to>>/
-            #scp -o \"StrictHostKeyChecking no\" -rp dist.tar.gz ubuntu@ec2-54-213-18-146.us-west-2.compute.amazonaws.com:~/ec2-54-213-18-146/home/ubuntu/
+
             aws s3 cp s3://udapeople-krajeevs-p03/jumpbox1.pem jumpbox1.pem
             chmod 770 jumpbox1.pem
             ssh-keyscan ec2-54-213-18-146.us-west-2.compute.amazonaws.com >> ~/.ssh/known_hosts
