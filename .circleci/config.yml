@@ -45,19 +45,17 @@ jobs:
           command: |
             # your code here
             echo "Hello"
-           
+            sudo apt-get install python3-pip
+            pip install awscli
+            #exit 1
       - run:
           name: Get backend url
           command: |
             # your code here
-            echo $SHELL
-            uname -a
-            pwd
-            echo "ABC" > tmp.txt
-            cat tmp.txt
-            API_URL=$(cat tmp.txt)
-            export API_URL="http://"`cat tmp.txt`":3030"
-            echo "${API_URL}"
+            aws s3 rb s3://udapeople-0613b4b --force
+            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-0613b4b"
+            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-0613b4b"
+            
       - run:
           name: Deploy frontend objects
           command: |
@@ -102,5 +100,5 @@ workflows:
   default:
     jobs:
       - test
-      - test2
+
       
