@@ -38,7 +38,7 @@ jobs:
     docker:
       # Docker image here that supports AWS CLI
       #- image: circleci/node:13.8.0
-      - image: python:3.7-alpine3.11
+      #- image: python:3.7-alpine3.11
       
     steps:
       # Checkout code from git
@@ -50,19 +50,20 @@ jobs:
             #sudo apt-get -y update
             #sudo apt-get install python3-pip
             #sudo apt-get install awscli
-            pip install awscli
-            #sudo apt-get -y -qq update
-            #sudo apt-get -y -qq install python3
-            #sudo apt-get -qq install awscli
+            ##pip install awscli
+            sudo apt-get update
+            sudo apt-get install python3
+            sudo apt-get install awscli
             
             #exit 1
       - run:
           name: Get backend url
           command: |
             # your code here
-            aws s3 rb s3://udapeople-d089d82 --force
-            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-d089d82"
-            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-d089d82"
+            aws s3 ls
+            #aws s3 rb s3://udapeople-d089d82 --force
+            #aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-d089d82"
+            #aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-d089d82"
             
       - run:
           name: Deploy frontend objects
