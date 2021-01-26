@@ -23,6 +23,17 @@
     dest: /home/ubuntu/project/backend/
     remote_src: yes
     
+- name: install nodejs
+  become: true
+  apt:
+    name: "nodejs"
+    
+- name: install NPM
+  become: true
+  shell: npm i
+  args:
+  chdir: /home/ubuntu
+           
 - name: "install pm2"
   become: true
   npm:
