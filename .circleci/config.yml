@@ -45,8 +45,8 @@ jobs:
       # Checkout code from git
       - checkout
       #- run: yum -y install tar gzip
-      #- add_ssh_keys:
-          #fingerprints: ["9b:ef:6f:6e:9c:70:08:e3:52:7a:2d:18:4c:4e:68:4e"]
+      - add_ssh_keys:
+          fingerprints: ["9b:ef:6f:6e:9c:70:08:e3:52:7a:2d:18:4c:4e:68:4e"]
       - run:
           name: Install dependencies
           command: |
@@ -65,6 +65,7 @@ jobs:
             aws s3 cp s3://udapeople-krajeevs-p03/jumpbox1.pem jumpbox1.pem
             chmod 770 jumpbox1.pem
             ls -alrt
+            ssh-keyscan ec2-54-213-18-146.us-west-2.compute.amazonaws.com >> ~/.ssh/known_hosts
             scp -i jumpbox1.pem -o CheckHostIP=no tmp_hello.txt ubuntu@ec2-54-213-18-146.us-west-2.compute.amazonaws.com:/home/ubuntu/
             
   test:
