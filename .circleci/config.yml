@@ -74,7 +74,7 @@ jobs:
             #tar -C backend -czvf artifact.tar.gz .
             ls -alrt 
             pwd
-            aws s3 cp s3://udapeople-krajeevs-p03/ artifact.tar.gz 
+            aws s3 cp s3://udapeople-krajeevs-p03/artifact.tar.gz artifact.tar.gz  
             ls -alrt
             echo "[web]" >> ~/project/.circleci/ansible/inventory.txt
             echo "ec2-54-213-18-146.us-west-2.compute.amazonaws.com" >> ~/project/.circleci/ansible/inventory.txt
