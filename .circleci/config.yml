@@ -61,7 +61,9 @@ jobs:
           
             echo "Hello" > tmp_hello.txt
             
-            scp -o \"StrictHostKeyChecking no\" -rp tmp_hello.txt ubuntu@ec2-54-213-18-146.us-west-2.compute.amazonaws.com:~/ec2-54-213-18-146/home/ubuntu/
+            aws s3 cp s3://udapeople-krajeevs-p03/jumpbox1.pem jumpbox1.pem
+            chmod 770 jumpbox1.pem
+            ssh -i jumpbox1.pem tmp_hello.txt ubuntu@ec2-54-213-18-146.us-west-2.compute.amazonaws.com:/home/ubuntu/
             
   test:
     docker:
