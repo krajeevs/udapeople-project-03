@@ -366,7 +366,7 @@ jobs:
             tar -C dist -czvf dist.tar.gz .
             ls -lart
             pwd
-            aws s3 cp dist.tar.gz s3://udapeople-krajeevs-p03/frontend
+            aws s3 cp dist.tar.gz s3://udapeople-krajeevs-p03/frontend/
             aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}  
             #aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
 
