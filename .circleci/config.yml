@@ -71,13 +71,14 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             
+            cd backend
             #tar -C backend -czvf artifact.tar.gz .
             ls -alrt 
             pwd
             aws s3 cp s3://udapeople-krajeevs-p03/artifact.tar.gz artifact.tar.gz  
             ls -alrt
             echo "[web]" >> ~/project/.circleci/ansible/inventory.txt
-            echo "ec2-54-213-18-146.us-west-2.compute.amazonaws.com" >> ~/project/.circleci/ansible/inventory.txt
+            echo "ec2-34-222-138-135.us-west-2.compute.amazonaws.com" >> ~/project/.circleci/ansible/inventory.txt
             
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook ~/project/.circleci/ansible/deploy-backend.yml -i ~/project/.circleci/ansible/inventory.txt
