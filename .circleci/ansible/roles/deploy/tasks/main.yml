@@ -1,8 +1,16 @@
-- name: "copy dist "
+- name: "copy folder "
+  become: true
+  copy::
+    #src: /root/project/backend/dist
+    src: /root/project/artifact.tar.gz
+    #src: /root/project/
+    dest: /home/ubuntu/project/
+    
+- name: "untar folder "
   become: true
   unarchive::
     #src: /root/project/backend/dist
-    src: /root/project/artifact.tar.gz
+    src: /home/ubuntu/project/artifact.tar.gz
     #src: /root/project/
     dest: /home/ubuntu/project/
     
