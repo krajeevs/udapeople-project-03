@@ -301,8 +301,9 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      #- image: amazon/aws-cli
       #- image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -313,8 +314,16 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            yum -y install nodejs
-            yum install npm
+            sudo apt-get update
+            sudo apt-get install python3
+            sudo apt-get install awscli
+            
+            #yum -y install nodejs
+            #yum install npm
+            
+            #sudo apt install python-pip python-dev
+            #sudo pip install awscli
+            
             #yum -y install tar gzip
             #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
             cat ~/project/backend_url.txt
