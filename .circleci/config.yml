@@ -37,7 +37,9 @@ jobs:
   test:
     docker:
       # Docker image here that supports AWS CLI
-      - image: circleci/node:13.8.0
+      #- image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
+      
     steps:
       # Checkout code from git
       - run:
