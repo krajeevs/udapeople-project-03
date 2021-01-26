@@ -4,7 +4,7 @@
     #src: /root/project/backend/dist
     src: /root/project/backend/artifact.tar.gz
     #src: /root/project/
-    dest: /home/ubuntu/
+    dest: /home/ubuntu/project/backend
 
     
 - name: "install dependencies."
