@@ -342,7 +342,7 @@ jobs:
             #apt-get install -y npm
             #yum install npm
             
-            #npm install
+            npm install
             
             npm start
             
