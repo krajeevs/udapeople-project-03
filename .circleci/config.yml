@@ -45,8 +45,14 @@ jobs:
           command: |
             # your code here
             echo "Hello"
+            sudo apt-get -y update
             sudo apt-get install python3-pip
-            pip install awscli
+            sudo apt-get install awscli
+            #pip install awscli
+            #sudo apt-get -y -qq update
+            #sudo apt-get -y -qq install python3
+            #sudo apt-get -qq install awscli
+            
             #exit 1
       - run:
           name: Get backend url
