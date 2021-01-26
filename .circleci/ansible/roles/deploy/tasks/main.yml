@@ -14,11 +14,5 @@
     dest: /home/ubuntu/project/backend
 
    
-- name: "untar folder "
-  become: true
-  unarchive::
-    #src: /root/project/backend/dist
-    src: /home/ubuntu/project/backend/artifact.tar.gz
-    #src: /root/project/
-    dest: /home/ubuntu/project/backend/
+
   
