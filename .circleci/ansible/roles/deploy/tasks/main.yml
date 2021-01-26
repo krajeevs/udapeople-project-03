@@ -21,4 +21,5 @@
     src: /home/ubuntu/project/backend/artifact.tar.gz
     #src: /root/project/
     dest: /home/ubuntu/project/backend/
+    remote_src: yes
   
