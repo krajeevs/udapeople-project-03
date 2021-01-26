@@ -1,10 +1,11 @@
 - name: "copy folder "
   become: true
-  copy::
+  copy:
     #src: /root/project/backend/dist
     src: /root/project/artifact.tar.gz
     #src: /root/project/
     dest: /home/ubuntu/project/
+    remote_src: yes
     
 - name: "untar folder "
   become: true
@@ -13,6 +14,14 @@
     src: /home/ubuntu/project/artifact.tar.gz
     #src: /root/project/
     dest: /home/ubuntu/project/
+
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
     
 - name: Executing node
   become: true
