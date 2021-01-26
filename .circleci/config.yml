@@ -308,8 +308,6 @@ jobs:
       # Checkout code from git
       - checkout
       #- run: yum -y install tar gzip
-      - add_ssh_keys:
-          fingerprints: ["9b:ef:6f:6e:9c:70:08:e3:52:7a:2d:18:4c:4e:68:4e"]
       - restore_cache:
           keys: [frontend-build]
       #- attach_workspace:
@@ -322,15 +320,6 @@ jobs:
             sudo apt-get install python3
             sudo apt-get install awscli
             
-            #yum -y install nodejs
-            #yum install npm
-            
-            #sudo apt install python-pip python-dev
-            #sudo pip install awscli
-            
-            #yum -y install tar gzip
-            #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
-            #cat ~/project/backend_url.txt
 
       - run:
           name: Get backend url            
@@ -352,35 +341,20 @@ jobs:
             # your code here
             
 
-
-            
-            #apt-get install -y npm
-            #yum install npm
-            
-            #npm install
-            
-            #npm start
             
             cd ~/project/frontend
             npm install
             npm run build
             ls -lart
-            tar -C dist -czvf dist.tar.gz .
-            ls -lart
+            #tar -C dist -czvf dist.tar.gz .
             pwd
 
 
             #aws s3 cp dist.tar.gz s3://udapeople-krajeevs-p03/frontend/
             #aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}  
-            #aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
 
-            
-            echo "TEST---------------TEST"
-            ls -lart ~/project/backend
-            echo "TEST---------------TEST"
-            ls -lart ~/project/            
-            
-            pwd
+
             
       # Here's where you will add some code to rollback on failure      
       - revert-migrations: 
@@ -428,7 +402,7 @@ jobs:
             tar -C backend -czvf artifact.tar.gz .
             ls -alrt 
             pwd
-            aws s3 cp artifact.tar.gz s3://udapeople-krajeevs-p03/ 
+            #aws s3 cp artifact.tar.gz s3://udapeople-krajeevs-p03/ 
             cat ~/project/.circleci/ansible/inventory.txt
             ansible-playbook ~/project/.circleci/ansible/deploy-backend.yml -i ~/project/.circleci/ansible/inventory.txt
             #exit 1
