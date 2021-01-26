@@ -257,8 +257,9 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            apt-get install python3-pip
-            pip install awscli
+            sudo apt-get update
+            sudo apt-get install python3
+            sudo apt-get install awscli
             #exit 1
       - run:
           name: Run migrations
@@ -367,7 +368,6 @@ jobs:
           command: |
             # your code here
             apk add --update ansible
-            apt-get install python3-pip
             pip install awscli
       - run:
           name: Deploy backend
@@ -396,7 +396,7 @@ jobs:
           command: |
             # your code here
             apk add --update curl
-            apt-get install python3-pip
+            #apt-get install python3-pip
             pip install awscli
       - attach_workspace:
           at: ~/ 
