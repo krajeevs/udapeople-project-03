@@ -2,18 +2,18 @@
   become: true
   copy:
     #src: /root/project/backend/dist
-    src: /root/project/artifact.tar.gz
+    src: /root/project/backend/artifact.tar.gz
     #src: /root/project/
-    dest: /home/ubuntu/project/
+    dest: /home/ubuntu/project/backend/
     remote_src: yes
     
 - name: "untar folder "
   become: true
   unarchive::
     #src: /root/project/backend/dist
-    src: /home/ubuntu/project/artifact.tar.gz
+    src: /home/ubuntu/project/backend/artifact.tar.gz
     #src: /root/project/
-    dest: /home/ubuntu/project/
+    dest: /home/ubuntu/project/backend/
 
 - name: "install pm2"
   become: true
