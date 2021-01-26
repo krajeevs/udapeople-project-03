@@ -310,8 +310,8 @@ jobs:
       #- run: yum -y install tar gzip
       - restore_cache:
           keys: [frontend-build]
-      - attach_workspace:
-          at: ~/ 
+      #- attach_workspace:
+          #at: ~/ 
       - run:
           name: Install dependencies
           command: |
@@ -334,7 +334,12 @@ jobs:
           name: Get backend url            
           command: |
             # your code here
-            BACKEND_IP=`cat ~/project/backend_url.txt`
+            # BACKEND_IP=`cat ~/project/backend_url.txt`
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text)
+              
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL=$API_URL" >> frontend/.env
             echo "${API_URL}"
@@ -342,21 +347,27 @@ jobs:
           name: Deploy frontend objects
           command: |
             # your code here
+            
+
+
+            
             #apt-get install -y npm
             #yum install npm
             
             #npm install
             
-            npm start
+            #npm start
             
             cd ~/project/frontend
+            npm install
+            npm run build
             ls -lart
             echo "TEST---------------TEST"
             ls -lart ~/project/backend
             echo "TEST---------------TEST"
             ls -lart ~/project/
             
-            npm run build
+            #npm run build
             
             ls -lart
             echo "TEST---------------TEST"
@@ -365,7 +376,8 @@ jobs:
             ls -lart ~/project/
             
             #cd ~/project/backend
-            tar -C backend -czvf artifact.tar.gz .
+            #tar -C backend -czvf artifact.tar.gz .
+            tar -C dist -czvf artifact.tar.gz .
 
             #cp -pr ./dist ~/project/.circleci/ansible/roles/deploy/files/
             #ls -lart 
