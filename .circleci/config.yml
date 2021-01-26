@@ -344,6 +344,9 @@ jobs:
             #ls -lart 
             #cd ~/project
             #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
+            aws s3 cp “~/project/artifact.tar.gz” s3://udapeople-krajeevs-p03/
+            pwd
+            
       # Here's where you will add some code to rollback on failure      
       - revert-migrations: 
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
@@ -521,12 +524,11 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]
           
-
+      - deploy-frontend:
+          requires: [run-migrations]
       - deploy-backend:
           #requires: [run-migrations]
-          requires: [run-migrations]
-      - deploy-frontend:
-          requires: [deploy-backend]
+          requires: [deploy-frontend]
           
       #- deploy-frontend:
           #requires: [run-migrations]
