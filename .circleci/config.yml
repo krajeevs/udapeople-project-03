@@ -328,7 +328,7 @@ jobs:
             
             #yum -y install tar gzip
             #aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicDnsName] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text > ~/project/backend_url.txt
-            cat ~/project/backend_url.txt
+            #cat ~/project/backend_url.txt
 
       - run:
           name: Get backend url            
