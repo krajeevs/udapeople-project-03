@@ -131,10 +131,7 @@ jobs:
             fi
             
       # Here's where you will add some code to rollback on failure  
-      - revert-migrations: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-environment: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+
           
   cloudfront-update:
     docker:
@@ -174,34 +171,11 @@ jobs:
             - project/oldworkflowid.txt
             - project/stacks.txt
       # Here's where you will add some code to rollback on failure  
-      - revert-migrations: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-environment: 
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+
           
-cleanup:
-    docker:
-      # Docker image here
-      - image: amazon/aws-cli
-    steps:
-      # Checkout code from git
-      - run:
-          name: Get old stack workflow id
-          command: |
-            # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
-      - run:
-          name: Remove old stacks and files
-          command: |
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-            then
-              # your code here
-            fi
+
             
 
-
-    
   test3:
     docker:
       # Docker image here that supports AWS CLI
