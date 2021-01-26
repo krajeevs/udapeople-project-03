@@ -15,7 +15,7 @@ commands:
           command: |
             # Your code here
             echo "<<parameters.workflow_id>>"
-            #aws s3 rm s3://udapeople-<<parameters.workflow_id>>
+            aws s3 rb s3://udapeople-<<parameters.workflow_id>> --force
             aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-<<parameters.workflow_id>>"
             aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-<<parameters.workflow_id>>"
 
@@ -37,7 +37,7 @@ commands:
             SUCCESS=`curl -H "token: krajeevs_<<parameters.workflow_id>>" --request GET https://api.memstash.io/values/migration_<<parameters.workflow_id>> `
             
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            # SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
             cd ~/project/backend
