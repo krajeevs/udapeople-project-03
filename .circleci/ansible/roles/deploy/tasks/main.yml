@@ -13,7 +13,8 @@
     #src: /root/project/
     dest: /home/ubuntu/project/backend
 
-   
+
+    
 - name: "untar folder "
   become: true
   ansible.builtin.unarchive:
@@ -23,12 +24,13 @@
     dest: /home/ubuntu/project/backend/
     remote_src: yes
     
-- name: install nodejs
+- name: "install nodejs"
   become: true
   apt:
     name: "nodejs"
+
     
-- name: install NPM
+- name: "install NPM"
   become: true
   shell: npm i
   args:
