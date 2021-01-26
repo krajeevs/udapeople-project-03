@@ -13,8 +13,6 @@
     #src: /root/project/
     dest: /home/ubuntu/project/backend
 
-
-    
 - name: "untar folder "
   become: true
   ansible.builtin.unarchive:
@@ -24,16 +22,28 @@
     dest: /home/ubuntu/project/backend/
     remote_src: yes
     
-- name: "install nodejs"
-  become: true
+- name: "update apt packages."
+  become: yes
   apt:
-    name: "nodejs"
-    
-- name: Install "coffee-script" node.js package globally.
-  become: true
-  community.general.npm:
-    name: coffee-script
-    global: yes
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+
+- name: remove dependencies that are no longer required
+  become: yes
+  apt:
+    autoremove: yes
+
+- name: "install dependencies."
+  become: yes
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
     
 - name: "install pm2"
   become: true
