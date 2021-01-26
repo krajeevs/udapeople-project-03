@@ -28,7 +28,13 @@
   become: true
   apt:
     name: "nodejs"
-           
+    
+- name: Install "coffee-script" node.js package globally.
+  become: true
+  community.general.npm:
+    name: coffee-script
+    global: yes
+    
 - name: "install pm2"
   become: true
   npm:
