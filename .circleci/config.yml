@@ -45,10 +45,10 @@ jobs:
           command: |
             # your code here
             echo "Hello"
-            sudo apt-get -y update
-            sudo apt-get install python3-pip
-            sudo apt-get install awscli
-            #pip install awscli
+            #sudo apt-get -y update
+            #sudo apt-get install python3-pip
+            #sudo apt-get install awscli
+            pip install awscli
             #sudo apt-get -y -qq update
             #sudo apt-get -y -qq install python3
             #sudo apt-get -qq install awscli
@@ -58,9 +58,9 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            aws s3 rb s3://udapeople-0613b4b --force
-            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-0613b4b"
-            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-0613b4b"
+            aws s3 rb s3://udapeople-d089d82 --force
+            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-front-end-d089d82"
+            aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-d089d82"
             
       - run:
           name: Deploy frontend objects
