@@ -2,7 +2,8 @@
   become: true
   copy:
     #src: /root/project/backend/dist
-    src: /root/project/
+    src: /root/project/artifact.tar.gz
+    #src: /root/project/
     dest: /home/ubuntu/project/
 
 - name: Executing node
