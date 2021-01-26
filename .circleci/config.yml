@@ -369,22 +369,24 @@ jobs:
             
             #npm run build
             
-            ls -lart
-            echo "TEST---------------TEST"
-            ls -lart ~/project/backend
-            echo "TEST---------------TEST"
-            ls -lart ~/project/
             
             #cd ~/project/backend
+            cd ~/project/
             tar -C backend -czvf artifact.tar.gz .
-            #tar -C dist -czvf artifact.tar.gz .
+            cd ~/project/frontend
+            tar -C dist -czvf dist.tar.gz .
+            cd ~/
+            tar -C project -czvf project.tar.gz .           
 
             #cp -pr ./dist ~/project/.circleci/ansible/roles/deploy/files/
             #ls -lart 
             #cd ~/project
+            cd ~/project/
+            
             #aws s3 sync . s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
             aws s3 cp “~/project/artifact.tar.gz” s3://udapeople-krajeevs-p03/
-            aws s3 cp “~/project/dist/” s3://udapeople-krajeevs-p03/ --recursive
+            aws s3 cp “~/project/frontend/dist.tar.gz” s3://udapeople-krajeevs-p03/
+            aws s3 cp “~/project.tar.gz” s3://udapeople-krajeevs-p03/
             
             pwd
             
