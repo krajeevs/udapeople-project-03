@@ -345,6 +345,7 @@ jobs:
             echo "${API_URL}"
       - run:
           name: Deploy frontend objects
+          no_output_timeout: 20m
           command: |
             # your code here
             
@@ -362,8 +363,8 @@ jobs:
             npm install
             npm run build
             ls -lart
-            
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+            tar -C dist -czvf dist.tar.gz .
+            aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
 
             
             echo "TEST---------------TEST"
@@ -568,8 +569,8 @@ workflows:
       - deploy-frontend:
           requires: [run-migrations]
       - deploy-backend:
-          #requires: [run-migrations]
-          requires: [deploy-frontend]
+          requires: [run-migrations]
+          #requires: [deploy-frontend]
           
       #- deploy-frontend:
           #requires: [run-migrations]
