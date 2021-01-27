@@ -538,10 +538,9 @@ jobs:
             --query "StackSummaries[*].StackName" \
             --stack-status-filter CREATE_COMPLETE \
             --no-paginate --output text) 
-            echo "${STACKS}"
 
             echo ${STACKS[@]}
-            echo ${OldWorkflowID}
+            echo "OldWorkflowID is " ${OldWorkflowID}
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]; then
               # your code here
               aws cloudformation delete-stack --stack-name "udapeople-krajeevs-p03-back-end-${OldWorkflowID}"
