@@ -438,11 +438,13 @@ jobs:
           command: |
             # your code here
             #URL=`cat ~/backend_url.txt`":3030/api/status"
-            URL=$(aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicIpAddress] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text)":3030/api/status"
+            URL=$(aws ec2 describe-instances --query Reservations[*].Instances[*].[PublicIpAddress] --filters Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} --output text)
+            echo ${URL}>>my_backend_url.txt
       - run:
           name: Backend smoke test.
           command: |
             # your code here
+            URL=`cat ~/my_backend_url.txt`":3030/api/status"
             echo ${URL}
             if curl -s ${URL} | grep "Welcome"
             then
