@@ -402,6 +402,7 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             
             tar -C backend -czvf artifact.tar.gz .
+            cp -p artifact.tar.gz ~/project/backend/artifact.tar.gz
             ls -alrt 
             pwd
             #aws s3 cp artifact.tar.gz s3://udapeople-krajeevs-p03/ 
