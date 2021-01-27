@@ -557,6 +557,9 @@ workflows:
   default:
     jobs:
       - build-frontend
+          filters:
+            branches:
+              only: [master]
       - build-backend
       - test-frontend:
           requires: [build-frontend]
