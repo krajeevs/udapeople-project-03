@@ -446,11 +446,13 @@ jobs:
             # your code here
             URL=`cat ~/project/my_backend_url.txt`":3030/api/status"
             echo ${URL}
-            if curl -s ${URL} | grep "Welcome"
+            if curl -s ${URL} | grep "ok"
             then
-            return 1
-            else
+            echo "Success"
             return 0
+            else
+            echo "Not Found"
+            return 1
             fi
       - run:
           name: Frontend smoke test.
