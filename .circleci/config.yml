@@ -32,6 +32,7 @@ commands:
       - run:
           name: Revert migrations
           # Add when this will run
+          when: on_fail
           command: |
             echo "<<parameters.workflow_id>>"
             SUCCESS=`curl -H "token: krajeevs_<<parameters.workflow_id>>" --request GET https://api.memstash.io/values/migration_<<parameters.workflow_id>> `
@@ -557,8 +558,8 @@ workflows:
       - deploy-frontend:
           requires: [run-migrations]
       - deploy-backend:
-          #requires: [run-migrations]
-          requires: [deploy-frontend]
+          requires: [run-migrations]
+          #requires: [deploy-frontend]
           
       #- deploy-frontend:
           #requires: [run-migrations]
