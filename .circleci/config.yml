@@ -444,7 +444,7 @@ jobs:
           name: Backend smoke test.
           command: |
             # your code here
-            URL=`cat ~/my_backend_url.txt`":3030/api/status"
+            URL=`cat ~/project/my_backend_url.txt`":3030/api/status"
             echo ${URL}
             if curl -s ${URL} | grep "Welcome"
             then
