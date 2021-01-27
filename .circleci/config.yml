@@ -529,7 +529,7 @@ jobs:
       - attach_workspace:
           at: ~/ 
       - run:
-          name: Get old stack workflow id
+          name: Get old stack workflow id and Remove old stacks and files
           command: |
             # your code here
             export OldWorkflowID=`cat oldworkflowid.txt`
@@ -539,9 +539,7 @@ jobs:
             --stack-status-filter CREATE_COMPLETE \
             --no-paginate --output text) 
             echo "${STACKS}"
-      - run:
-          name: Remove old stacks and files
-          command: |
+
             echo ${STACKS[@]}
             echo ${OldWorkflowID}
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]; then
