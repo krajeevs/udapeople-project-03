@@ -346,13 +346,14 @@ jobs:
             npm install
             npm run build
             ls -lart
-            #tar -C dist -czvf dist.tar.gz .
+            tar -C dist -czvf dist.tar.gz .
             pwd
 
 
             #aws s3 cp dist.tar.gz s3://udapeople-krajeevs-p03/frontend/
             #aws s3 cp dist.tar.gz s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}  
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+            aws s3 cp dist/index.html s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive 
+
 
 
             
@@ -450,6 +451,7 @@ jobs:
             # your code here
             echo 'test'
             URL=`cat ~/project/backend_url.txt`
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-west-2.amazonaws.com"
             if curl -s ${URL} | grep "Welcome"
             then
             return 1
