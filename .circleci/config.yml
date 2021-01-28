@@ -201,7 +201,7 @@ jobs:
             #cat ~/project/backend_url.txt
 
             yum -y install tar gzip
-            #exit 1
+            exit 1
       - persist_to_workspace:
           root: ~/
           paths:
