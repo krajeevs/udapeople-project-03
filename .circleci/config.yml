@@ -269,7 +269,7 @@ jobs:
             # Your code here
             cd ~/project/backend
             npm i
-            npm run migrations:revert
+            #npm run migrations:revert
             #npm run migrations
             mystatus=$( npm run migrations | grep -i "has been executed successfully")
             echo $mystatus >> ~/project/migrations_status.txt
